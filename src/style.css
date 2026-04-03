@@ -4,6 +4,15 @@
   * {
     @apply text-jet transition-all;
   }
+  p {
+    @apply text-sm;
+  }
+  input {
+    @apply text-sm border px-2 py-1;
+  }
+  label {
+    @apply text-sm;
+  }
   h2 {
     @apply text-3xl font-semibold;
   }

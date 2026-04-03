@@ -1,0 +1,76 @@
+import { createContext, type Dispatch, type SetStateAction } from "react";
+
+type Exception =
+  | {
+      type: "exclude";
+      date: string; // "YYYY-MM-DD"
+    }
+  | {
+      type: "override";
+      date: string;
+      startTime: string;
+      endTime: string;
+    };
+
+type Slot = {
+  id: string;
+  tutorId: string;
+  start: string; // ISO UTC datetime
+  end: string; // ISO UTC datetime
+  duration: number;
+  buffer?: number;
+  status: string;
+};
+
+interface BookingTypes {
+  availableSlots: Slot[];
+  startDate: string;
+  endDate: string;
+  startTime: string;
+  endTime: string;
+  selectedDays: number[];
+  duration: 30 | 60 | 45;
+  buffer: number;
+  setStartDate: Dispatch<SetStateAction<string>>;
+  setEndDate: Dispatch<SetStateAction<string>>;
+  setStartTime: Dispatch<SetStateAction<string>>;
+  setEndTime: Dispatch<SetStateAction<string>>;
+  setSelectedDays: Dispatch<SetStateAction<number[]>>;
+  setDuration: Dispatch<SetStateAction<30 | 60 | 45>>;
+  setBuffer: Dispatch<SetStateAction<number>>;
+
+  // Testing slots generation form
+  testSlots: Slot[];
+  setTestSlots: Dispatch<SetStateAction<Slot[]>>;
+  generateSlots: (form: RecurringFormState) => Slot[];
+  filterAvailableSlots: (slots: Slot[], bookedSlots: Slot[]) => Slot[];
+  bookedSlots: Slot[];
+  uniqueSelectedDays: number[];
+}
+
+type RecurringFormState = {
+  startDate: string;
+  endDate: string;
+  selectedDays: number[];
+  startTime: string;
+  endTime: string;
+  duration: 30 | 60 | 45;
+  buffer: number;
+  exceptions?: Exception[];
+};
+
+export type WeekFormState = {
+  weekStart: string; // ISO date (Monday)
+  selectedDays: number[]; // [1, 3, 5] => Mon, Wed, Fri
+  startTime: string;
+  endTime: string;
+  duration: 30 | 60 | 45;
+  buffer: number;
+};
+
+export type { Slot, RecurringFormState };
+export type { BookingTypes };
+
+export const BookingContext = createContext<BookingTypes | undefined>(
+  undefined,
+);

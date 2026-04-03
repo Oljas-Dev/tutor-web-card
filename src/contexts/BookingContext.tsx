@@ -1,0 +1,191 @@
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import { useState, type ReactNode } from "react";
+import {
+  BookingContext,
+  type RecurringFormState,
+  type Slot,
+} from "./BookingContextData";
+// import { getHoursAndMinutes } from "../helpers/functions";
+
+dayjs.extend(utc);
+
+export function BookingContextProvider({ children }: { children: ReactNode }) {
+  const [startDate, setStartDate] = useState("2026-03-30");
+  const [endDate, setEndDate] = useState("2026-04-13");
+  const [selectedDays, setSelectedDays] = useState<number[]>([]);
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [duration, setDuration] = useState<30 | 60 | 45>(30);
+  const [buffer, setBuffer] = useState<number>(0);
+
+  const [testSlots, setTestSlots] = useState<Slot[]>([]);
+
+  // Getting rid of repeating numbers in selectedDays array
+  const uniqueSelectedDays: number[] = [...new Set(selectedDays)];
+
+  const formState: RecurringFormState = {
+    startDate,
+    endDate,
+    selectedDays,
+    startTime,
+    endTime,
+    duration,
+    buffer,
+    exceptions: [
+      { type: "exclude", date: "" },
+      {
+        type: "override",
+        date: "",
+        startTime: "",
+        endTime: "",
+      },
+    ],
+  };
+
+  const bookedSlots: Slot[] = [
+    {
+      id: "b1",
+      tutorId: "tutor-1",
+      start: "2026-04-03T07:00:00.000Z",
+      end: "2026-04-03T10:00:00.000Z",
+      duration: 30,
+      status: "booked",
+    },
+  ];
+
+  const slots: Slot[] = [];
+
+  // generate free slots in schedule
+  function generateSlots(form: RecurringFormState): Slot[] {
+    // const weekStart = dayjs.utc(form.weekStart);
+
+    if (!form) {
+      throw new Error("Form contain no values");
+    }
+
+    let currentDate = dayjs.utc(form.startDate);
+    const endDate = dayjs.utc(form.endDate);
+
+    while (currentDate.isBefore(endDate) || currentDate.isSame(endDate)) {
+      const dateStr = currentDate.format("YYYY-MM-DD");
+      const dayOfWeek = currentDate.day();
+
+      const exception = form.exceptions?.find(
+        (excep) => excep.date === dateStr,
+      );
+
+      // skip excluded days
+      if (exception?.type === "exclude") {
+        currentDate = currentDate.add(1, "day");
+        continue;
+      }
+
+      // determine if we should generate slots
+      const isSelectedDay = form.selectedDays.includes(dayOfWeek);
+      const isOverride = exception?.type === "override";
+
+      if (isSelectedDay || isOverride) {
+        const startTime = isOverride ? exception.startTime : form.startTime;
+        const endTime = isOverride ? exception.endTime : form.endTime;
+
+        let currentTime = dayjs.utc(`${dateStr}T${startTime}:00`);
+        const dayEndTime = dayjs.utc(`${dateStr}T${endTime}:00`);
+
+        while (true) {
+          const slotEnd = currentTime.add(form.duration, "minute");
+
+          // Generation breaks if time left is not enough for a whole lesson
+          if (slotEnd.isAfter(dayEndTime)) break;
+
+          slots.push({
+            id: crypto.randomUUID(),
+            tutorId: "tutor-1",
+            start: currentTime.toISOString(),
+            end: slotEnd.toISOString(),
+            duration: form.duration,
+            buffer: form.buffer || 0,
+            status: "available",
+          });
+
+          currentTime = slotEnd.add(form.buffer, "minute");
+        }
+      }
+
+      currentDate = currentDate.add(1, "day");
+    }
+    return slots;
+  }
+
+  const generatedSlots = generateSlots(formState);
+
+  function isOverlapping(slot: Slot, booked: Slot) {
+    return (
+      dayjs(slot.start).isBefore(dayjs(booked.end)) &&
+      dayjs(slot.end).isAfter(dayjs(booked.start))
+    );
+  }
+
+  function filterAvailableSlots(slots: Slot[], bookedSlots: Slot[]): Slot[] {
+    const slotsWithStatus = slots.map((slot) => {
+      const isBooked = bookedSlots.some((booked) =>
+        isOverlapping(slot, booked),
+      );
+
+      return {
+        ...slot,
+        status: isBooked ? "booked" : "available",
+      };
+    });
+    return slotsWithStatus;
+  }
+
+  const availableSlots = filterAvailableSlots(generatedSlots, bookedSlots);
+
+  // const testTiming = (timeArr: Slot[]) => {
+  //   const res = timeArr.map(
+  //     (slot) =>
+  //       " from " +
+  //       getHoursAndMinutes(new Date(Date.parse(slot.start))) +
+  //       " till " +
+  //       getHoursAndMinutes(new Date(Date.parse(slot.end))),
+  //   );
+
+  //   return res;
+  // };
+
+  // const isPast = dayjs().isAfter(dayjs("2026-03-27T16:54:00.000Z"));
+
+  // console.log(isPast);
+  // console.log(availableSlots);
+
+  return (
+    <BookingContext.Provider
+      value={{
+        uniqueSelectedDays,
+        testSlots,
+        bookedSlots,
+        setTestSlots,
+        availableSlots,
+        startDate,
+        endDate,
+        startTime,
+        endTime,
+        selectedDays,
+        duration,
+        buffer,
+        setStartDate,
+        setStartTime,
+        setSelectedDays,
+        setEndDate,
+        setEndTime,
+        setDuration,
+        setBuffer,
+        generateSlots,
+        filterAvailableSlots,
+      }}
+    >
+      {children}
+    </BookingContext.Provider>
+  );
+}
