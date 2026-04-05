@@ -29,19 +29,19 @@ interface BookingTypes {
   startTime: string;
   endTime: string;
   selectedDays: number[];
-  duration: 30 | 60 | 45;
+  duration: 0 | 30 | 60 | 45;
   buffer: number;
   setStartDate: Dispatch<SetStateAction<string>>;
   setEndDate: Dispatch<SetStateAction<string>>;
   setStartTime: Dispatch<SetStateAction<string>>;
   setEndTime: Dispatch<SetStateAction<string>>;
   setSelectedDays: Dispatch<SetStateAction<number[]>>;
-  setDuration: Dispatch<SetStateAction<30 | 60 | 45>>;
+  setDuration: Dispatch<SetStateAction<0 | 30 | 60 | 45>>;
   setBuffer: Dispatch<SetStateAction<number>>;
 
   // Testing slots generation form
-  testSlots: Slot[];
-  setTestSlots: Dispatch<SetStateAction<Slot[]>>;
+  filteredSlots: Slot[];
+  setFilteredSlots: Dispatch<SetStateAction<Slot[]>>;
   generateSlots: (form: RecurringFormState) => Slot[];
   filterAvailableSlots: (slots: Slot[], bookedSlots: Slot[]) => Slot[];
   bookedSlots: Slot[];
@@ -54,7 +54,7 @@ type RecurringFormState = {
   selectedDays: number[];
   startTime: string;
   endTime: string;
-  duration: 30 | 60 | 45;
+  duration: 0 | 30 | 60 | 45;
   buffer: number;
   exceptions?: Exception[];
 };
@@ -64,7 +64,7 @@ export type WeekFormState = {
   selectedDays: number[]; // [1, 3, 5] => Mon, Wed, Fri
   startTime: string;
   endTime: string;
-  duration: 30 | 60 | 45;
+  duration: 0 | 30 | 60 | 45;
   buffer: number;
 };
 

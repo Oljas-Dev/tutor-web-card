@@ -13,6 +13,11 @@
   label {
     @apply text-sm;
   }
+
+  button {
+    @apply bg-jet/20 border rounded py-2 px-6 disabled:bg-jet/10 disabled:text-jet/20;
+  }
+
   h2 {
     @apply text-3xl font-semibold;
   }

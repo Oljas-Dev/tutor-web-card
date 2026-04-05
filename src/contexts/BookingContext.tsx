@@ -11,15 +11,15 @@ import {
 dayjs.extend(utc);
 
 export function BookingContextProvider({ children }: { children: ReactNode }) {
-  const [startDate, setStartDate] = useState("2026-03-30");
-  const [endDate, setEndDate] = useState("2026-04-13");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [selectedDays, setSelectedDays] = useState<number[]>([]);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [duration, setDuration] = useState<30 | 60 | 45>(30);
+  const [duration, setDuration] = useState<0 | 30 | 60 | 45>(30);
   const [buffer, setBuffer] = useState<number>(0);
 
-  const [testSlots, setTestSlots] = useState<Slot[]>([]);
+  const [filteredSlots, setFilteredSlots] = useState<Slot[]>([]);
 
   // Getting rid of repeating numbers in selectedDays array
   const uniqueSelectedDays: number[] = [...new Set(selectedDays)];
@@ -54,14 +54,22 @@ export function BookingContextProvider({ children }: { children: ReactNode }) {
     },
   ];
 
-  const slots: Slot[] = [];
-
   // generate free slots in schedule
   function generateSlots(form: RecurringFormState): Slot[] {
-    // const weekStart = dayjs.utc(form.weekStart);
-
     if (!form) {
       throw new Error("Form contain no values");
+    }
+
+    const slots: Slot[] = [];
+
+    if (
+      !form.startDate ||
+      !form.endDate ||
+      !form.startTime ||
+      !form.endTime ||
+      form.duration <= 0
+    ) {
+      return slots;
     }
 
     let currentDate = dayjs.utc(form.startDate);
@@ -163,9 +171,9 @@ export function BookingContextProvider({ children }: { children: ReactNode }) {
     <BookingContext.Provider
       value={{
         uniqueSelectedDays,
-        testSlots,
+        filteredSlots,
         bookedSlots,
-        setTestSlots,
+        setFilteredSlots,
         availableSlots,
         startDate,
         endDate,
