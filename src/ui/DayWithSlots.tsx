@@ -20,8 +20,10 @@ export default function DayWithSlots({ slot }: { slot: Slot }) {
   }
   return (
     <div
-      className={`flex flex-col items-center  py-2 rounded cursor-pointer ${slot.status === "booked" ? "bg-jade-light/40 [&_p]:text-jet/50" : "bg-jade"}`}
-      onClick={() => handleSlotClick()}
+      className={`flex flex-col items-center py-2 rounded ${slot.status === "booked" ? "bg-jade-light/40 [&_p]:text-jet/50" : "bg-jade cursor-pointer"}`}
+      onClick={
+        slot.status === "available" ? () => handleSlotClick() : () => null
+      }
     >
       <p>
         {startTime} - {endTime} {slot.status}

@@ -8,6 +8,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CheckSlots from "./components/calendarComponents/CheckSlots";
 import BookingConfirmation from "./ui/BookingConfirmation";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
@@ -31,6 +32,16 @@ function App() {
                   />
                 </Route>
               </Routes>
+              <Toaster
+                toastOptions={{
+                  duration: 3000,
+                  style: {
+                    fontSize: "14px",
+                    background: "#abd1c6",
+                    color: "#312f2c",
+                  },
+                }}
+              />
             </main>
           </LocalizationProvider>
         </BookingContextProvider>

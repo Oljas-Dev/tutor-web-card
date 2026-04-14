@@ -3,13 +3,14 @@ import type { Slot } from "../../contexts/BookingContextData";
 import { useCalendar } from "../../contexts/CalendarContext";
 import SmallBlock from "../../ui/SmallBlock";
 import type { JSX } from "@emotion/react/jsx-runtime";
+import { useBookings } from "../../contexts/useBookings";
 
 export default function ShowCurrentMonth() {
   const { currentMonth, daysInMonth, isToday } = useCalendar();
+  const { filteredSlots } = useBookings();
   const [searchParams, serSearchParams] = useSearchParams();
 
   const navigate = useNavigate();
-  const filteredSlots = JSON.parse(localStorage?.getItem("slots"));
 
   const daysArr = Array.from({ length: daysInMonth }, (_, i) =>
     createDaysObj(i),
@@ -37,7 +38,8 @@ export default function ShowCurrentMonth() {
 
   daysArr.forEach((day, i) => {
     const greenSlots = filteredSlots?.some(
-      (slot: Slot) => slot.start.substring(0, 10) === day.id,
+      (slot: Slot) =>
+        slot.start.substring(0, 10) === day.id && slot.status === "available",
     );
 
     days.push(

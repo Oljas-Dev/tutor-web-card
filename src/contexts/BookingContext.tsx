@@ -19,7 +19,28 @@ export function BookingContextProvider({ children }: { children: ReactNode }) {
   const [duration, setDuration] = useState<0 | 30 | 60 | 45>(30);
   const [buffer, setBuffer] = useState<number>(0);
 
-  const [filteredSlots, setFilteredSlots] = useState<Slot[]>([]);
+  const [filteredSlots, setFilteredSlots] =
+    useState<Slot[]>(expiredSlotsCheck());
+
+  function expiredSlotsCheck() {
+    const now = dayjs().format("YYYY-MM-DD HH:mm");
+    const slotsFromStorage = JSON.parse(localStorage.getItem("slots"));
+
+    if (!slotsFromStorage) return [];
+
+    const newSlots: Slot[] = [];
+
+    // Check whether the slot is outdated
+    const noExpiredSlots = slotsFromStorage.forEach((slot: Slot) => {
+      const outdatedSlot = dayjs(now).add(5, "minute").isAfter(slot.start);
+      if (outdatedSlot) {
+        slot.status = "expired";
+      }
+      newSlots.push(slot);
+    });
+
+    return newSlots;
+  }
 
   // Getting rid of repeating numbers in selectedDays array
   const uniqueSelectedDays: number[] = [...new Set(selectedDays)];

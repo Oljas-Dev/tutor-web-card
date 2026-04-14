@@ -15,11 +15,15 @@
   }
 
   button {
-    @apply bg-jet/20 border rounded py-2 px-6 disabled:bg-jet/10 disabled:text-jet/20;
+    @apply bg-jet/20 text-xl border rounded py-2 px-6 cursor-pointer disabled:bg-jet/10 disabled:text-jet/20 hover:bg-jet/10;
   }
 
   h2 {
     @apply text-3xl font-semibold;
+  }
+
+  h3 {
+    @apply text-2xl font-medium;
   }
 
   .calendar-grid {
