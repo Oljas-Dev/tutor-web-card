@@ -6,12 +6,14 @@ import { FormWeekDays } from "../ui/FormWeekDays";
 import { TimeSelector } from "../ui/TimeSelector";
 import { DurationSelector } from "../ui/DurationSelector";
 import { useNavigate } from "react-router-dom";
+import useInsertlots from "../api/features/useInsertSlots";
 
 export default function Planner() {
   const [noDatesError, setNoDatesError] = useState(false);
   const [noWeekDayError, setNoWeekDayError] = useState(false);
   const [noHoursError, setNoHoursError] = useState(false);
   const [noDurationError, setNoDurationError] = useState(false);
+  const { insert, isInserting } = useInsertlots();
 
   const {
     startDate,
@@ -72,13 +74,15 @@ export default function Planner() {
 
     const filteredSlots = filterAvailableSlots(generatedSlots, bookedSlots);
 
-    setFilteredSlots(filteredSlots);
-    const prevArr = JSON.parse(localStorage.getItem("slots")) || [];
+    insert(filteredSlots);
 
-    const preparedArr = prevArr.concat(filteredSlots);
+    // setFilteredSlots(filteredSlots);
+    // const prevArr = JSON.parse(localStorage.getItem("slots")) || [];
 
-    localStorage.setItem("slots", JSON.stringify(preparedArr));
-    console.log(preparedArr);
+    // const preparedArr = prevArr.concat(filteredSlots);
+
+    // localStorage.setItem("slots", JSON.stringify(preparedArr));
+    // console.log(preparedArr);
     navigate("/dashboard");
   }
 

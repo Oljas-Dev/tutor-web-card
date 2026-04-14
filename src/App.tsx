@@ -9,6 +9,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CheckSlots from "./components/calendarComponents/CheckTimeSlots";
 import BookingConfirmation from "./ui/BookingConfirmation";
 import { Toaster } from "react-hot-toast";
+import SignIn from "./components/authentication/login/SignIn";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <main className="flex flex-col justify-center items-center text-3xl bg-main-bg h-screen">
               <Routes>
+                <Route path="login" element={<SignIn />} />
                 <Route path="/" element={<Applayout />}>
                   <Route index element={<Navigate replace to="dashboard" />} />
                   <Route path="dashboard" element={<Dashboard />} />
