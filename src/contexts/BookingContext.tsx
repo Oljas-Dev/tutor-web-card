@@ -130,8 +130,8 @@ export function BookingContextProvider({ children }: { children: ReactNode }) {
           slots.push({
             id: crypto.randomUUID(),
             tutorId: "tutor-1",
-            start: currentTime.toISOString(),
-            end: slotEnd.toISOString(),
+            startDate: currentTime.toISOString(),
+            endDate: slotEnd.toISOString(),
             duration: form.duration,
             buffer: form.buffer || 0,
             status: "available",

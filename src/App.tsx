@@ -6,7 +6,7 @@ import Dashboard from "./components/Dashboard";
 import Planner from "./components/Planner";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import CheckSlots from "./components/calendarComponents/CheckSlots";
+import CheckSlots from "./components/calendarComponents/CheckTimeSlots";
 import BookingConfirmation from "./ui/BookingConfirmation";
 import { Toaster } from "react-hot-toast";
 

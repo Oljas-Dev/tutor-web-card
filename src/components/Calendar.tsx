@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { sendEmail } from "../api/emails/useResendEmail";
 import MonthsSlider from "./calendarComponents/MonthsSlider";
 import ShowCurrentMonth from "./calendarComponents/ShowCurrentMonth";
@@ -6,6 +7,7 @@ import ShowPreviousMonth from "./calendarComponents/ShowPreviousMonth";
 import WeekDays from "./calendarComponents/WeekDays";
 
 export default function Calendar() {
+  const navigate = useNavigate();
   async function handleSendEmail() {
     try {
       await sendEmail([
@@ -44,6 +46,7 @@ export default function Calendar() {
         <ShowNextMonth />
       </div>
       <button onClick={handleSendEmail}>send email</button>
+      <button onClick={() => navigate("/planner")}>plan your lessons</button>
     </div>
   );
 }
