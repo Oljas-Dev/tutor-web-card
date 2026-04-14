@@ -12,7 +12,6 @@ export async function sendEmail(data: SendEmailPayload[]) {
     },
     body: JSON.stringify(data),
   });
-  console.log(res);
 
   if (!res.ok) {
     throw new Error("Failed to send email");
