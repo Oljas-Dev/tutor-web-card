@@ -14,9 +14,9 @@ type Exception =
 
 type Slot = {
   id: string;
-  tutorId: string;
-  startDate: string; // ISO UTC datetime
-  endDate: string; // ISO UTC datetime
+  user_id: string;
+  start_time: string; // ISO UTC datetime
+  end_time: string; // ISO UTC datetime
   duration: number;
   buffer?: number;
   status: string;

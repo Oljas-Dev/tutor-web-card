@@ -6,6 +6,7 @@ import {
   type RecurringFormState,
   type Slot,
 } from "./BookingContextData";
+import { useUser } from "../api/features/useUser";
 // import { getHoursAndMinutes } from "../helpers/functions";
 
 dayjs.extend(utc);
@@ -21,6 +22,10 @@ export function BookingContextProvider({ children }: { children: ReactNode }) {
 
   const [filteredSlots, setFilteredSlots] =
     useState<Slot[]>(expiredSlotsCheck());
+
+  const { user } = useUser();
+
+  console.log(user);
 
   function expiredSlotsCheck() {
     const now = dayjs().format("YYYY-MM-DD HH:mm");
@@ -127,13 +132,23 @@ export function BookingContextProvider({ children }: { children: ReactNode }) {
           // Generation breaks if time left is not enough for a whole lesson
           if (slotEnd.isAfter(dayEndTime)) break;
 
+          // slots.push({
+          //   id: crypto.randomUUID(),
+          //   user_id: user!.id,
+          //   startDate: currentTime.toISOString(),
+          //   endDate: slotEnd.toISOString(),
+          //   duration: form.duration,
+          //   buffer: form.buffer || 0,
+          //   status: "available",
+          // });
+
           slots.push({
             id: crypto.randomUUID(),
-            tutorId: "tutor-1",
-            startDate: currentTime.toISOString(),
-            endDate: slotEnd.toISOString(),
+            user_id: user!.id,
+            start_time: currentTime.toISOString(),
+            end_time: slotEnd.toISOString(),
             duration: form.duration,
-            buffer: form.buffer || 0,
+            buffer: form.buffer ?? 0,
             status: "available",
           });
 

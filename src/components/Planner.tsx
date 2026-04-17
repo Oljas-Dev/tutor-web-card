@@ -26,7 +26,6 @@ export default function Planner() {
     generateSlots,
     filterAvailableSlots,
     bookedSlots,
-    setFilteredSlots,
   } = useBookings();
 
   const navigate = useNavigate();
@@ -59,6 +58,7 @@ export default function Planner() {
       endTime,
       duration,
       buffer,
+
       exceptions: [
         { type: "exclude", date: "" },
         {
@@ -73,6 +73,8 @@ export default function Planner() {
     const generatedSlots = generateSlots(newSlots);
 
     const filteredSlots = filterAvailableSlots(generatedSlots, bookedSlots);
+
+    // console.log(filteredSlots);
 
     insert(filteredSlots);
 
