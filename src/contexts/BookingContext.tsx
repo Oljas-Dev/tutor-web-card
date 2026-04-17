@@ -20,32 +20,29 @@ export function BookingContextProvider({ children }: { children: ReactNode }) {
   const [duration, setDuration] = useState<0 | 30 | 60 | 45>(30);
   const [buffer, setBuffer] = useState<number>(0);
 
-  const [filteredSlots, setFilteredSlots] =
-    useState<Slot[]>(expiredSlotsCheck());
+  // const [filteredSlots, setFilteredSlots] = useState<Slot[]>([]);
 
   const { user } = useUser();
 
-  console.log(user);
+  // function expiredSlotsCheck() {
+  //   const now = dayjs().format("YYYY-MM-DD HH:mm");
+  //   const slotsFromStorage = JSON.parse(localStorage.getItem("slots"));
 
-  function expiredSlotsCheck() {
-    const now = dayjs().format("YYYY-MM-DD HH:mm");
-    const slotsFromStorage = JSON.parse(localStorage.getItem("slots"));
+  //   if (!slotsFromStorage) return [];
 
-    if (!slotsFromStorage) return [];
+  //   const newSlots: Slot[] = [];
 
-    const newSlots: Slot[] = [];
+  //   // Check whether the slot is outdated
+  //   const noExpiredSlots = slotsFromStorage.forEach((slot: Slot) => {
+  //     const outdatedSlot = dayjs(now).add(5, "minute").isAfter(slot.start);
+  //     if (outdatedSlot) {
+  //       slot.status = "expired";
+  //     }
+  //     newSlots.push(slot);
+  //   });
 
-    // Check whether the slot is outdated
-    const noExpiredSlots = slotsFromStorage.forEach((slot: Slot) => {
-      const outdatedSlot = dayjs(now).add(5, "minute").isAfter(slot.start);
-      if (outdatedSlot) {
-        slot.status = "expired";
-      }
-      newSlots.push(slot);
-    });
-
-    return newSlots;
-  }
+  //   return newSlots;
+  // }
 
   // Getting rid of repeating numbers in selectedDays array
   const uniqueSelectedDays: number[] = [...new Set(selectedDays)];
@@ -72,9 +69,9 @@ export function BookingContextProvider({ children }: { children: ReactNode }) {
   const bookedSlots: Slot[] = [
     {
       id: "b1",
-      tutorId: "tutor-1",
-      start: "2026-04-03T07:00:00.000Z",
-      end: "2026-04-03T10:00:00.000Z",
+      user_id: "tutor-1",
+      start_time: "2026-04-03T07:00:00.000Z",
+      end_time: "2026-04-03T10:00:00.000Z",
       duration: 30,
       status: "booked",
     },
@@ -165,8 +162,8 @@ export function BookingContextProvider({ children }: { children: ReactNode }) {
 
   function isOverlapping(slot: Slot, booked: Slot) {
     return (
-      dayjs(slot.start).isBefore(dayjs(booked.end)) &&
-      dayjs(slot.end).isAfter(dayjs(booked.start))
+      dayjs(slot.start_time).isBefore(dayjs(booked.end_time)) &&
+      dayjs(slot.end_time).isAfter(dayjs(booked.start_time))
     );
   }
 
@@ -207,9 +204,7 @@ export function BookingContextProvider({ children }: { children: ReactNode }) {
     <BookingContext.Provider
       value={{
         uniqueSelectedDays,
-        filteredSlots,
         bookedSlots,
-        setFilteredSlots,
         availableSlots,
         startDate,
         endDate,

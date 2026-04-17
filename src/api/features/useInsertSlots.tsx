@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import insertSlots from "../supabase/insertSlots";
+import insertSlots from "../CRUD/insertSlots";
 
 export default function useInsertlots() {
   const queryClient = useQueryClient();

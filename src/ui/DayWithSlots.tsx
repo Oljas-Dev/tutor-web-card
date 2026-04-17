@@ -9,8 +9,8 @@ export default function DayWithSlots({ slot }: { slot: Slot }) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const navigate = useNavigate();
-  const startTime = dayjs.utc(slot.start).format("HH:mm");
-  const endTime = dayjs.utc(slot.end).format("HH:mm");
+  const startTime = dayjs.utc(slot.start_time).format("HH:mm");
+  const endTime = dayjs.utc(slot.end_time).format("HH:mm");
   //   console.log(date);
 
   function handleSlotClick() {

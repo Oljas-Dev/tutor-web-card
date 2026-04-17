@@ -40,8 +40,6 @@ interface BookingTypes {
   setBuffer: Dispatch<SetStateAction<number>>;
 
   // Testing slots generation form
-  filteredSlots: Slot[];
-  setFilteredSlots: Dispatch<SetStateAction<Slot[]>>;
   generateSlots: (form: RecurringFormState) => Slot[];
   filterAvailableSlots: (slots: Slot[], bookedSlots: Slot[]) => Slot[];
   bookedSlots: Slot[];

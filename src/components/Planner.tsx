@@ -77,14 +77,6 @@ export default function Planner() {
     // console.log(filteredSlots);
 
     insert(filteredSlots);
-
-    // setFilteredSlots(filteredSlots);
-    // const prevArr = JSON.parse(localStorage.getItem("slots")) || [];
-
-    // const preparedArr = prevArr.concat(filteredSlots);
-
-    // localStorage.setItem("slots", JSON.stringify(preparedArr));
-    // console.log(preparedArr);
     navigate("/dashboard");
   }
 
@@ -117,9 +109,14 @@ export default function Planner() {
         <hr className={`${noHoursError ? "border-red-400" : ""}`} />
 
         <DurationSelector />
+        {noDurationError && (
+          <p className="text-red-400 -mb-8">
+            Please choose duration of your lessons
+          </p>
+        )}
 
         <button type="submit" className="cursor-pointer border py-1 rounded">
-          save
+          {isInserting ? "creating new lessons..." : "save"}
         </button>
       </div>
     </form>

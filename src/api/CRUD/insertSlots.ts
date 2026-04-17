@@ -1,5 +1,5 @@
 import type { Slot } from "../../contexts/BookingContextData";
-import { supabase } from "./supabase";
+import { supabase } from "../supabase/supabase";
 
 export default async function insertSlots(slots: Slot[]) {
   const { data, error } = await supabase.from("slots").insert(slots).select();

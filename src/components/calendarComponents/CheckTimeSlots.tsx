@@ -3,25 +3,27 @@ import DayWithSlots from "../../ui/DayWithSlots";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { ArrowLeft } from "react-bootstrap-icons";
-import { useBookings } from "../../contexts/useBookings";
+import { useLessons } from "../../api/features/useLessons";
 
 dayjs.extend(utc);
 
-export default function CheckSlots() {
-  const { filteredSlots } = useBookings();
+export default function CheckTimeSlots() {
+  const { lessons } = useLessons();
   const { dayId } = useParams();
 
   const navigate = useNavigate();
 
+  if (!lessons) return <p>waiting for lessons to load...</p>;
+
   const currentDay = dayId?.slice(-10);
   const formatedCurrentDay = dayjs(currentDay).format("MMMM D");
 
-  const currentSlots = filteredSlots
-    .filter((slot) => slot.start.substring(0, 10) === currentDay)
+  const currentSlots = lessons
+    ?.filter((slot) => slot.start_time.substring(0, 10) === currentDay)
     .sort(
       (a, b) =>
-        Number(dayjs.utc(a.start).format("HH")) -
-        Number(dayjs.utc(b.start).format("HH")),
+        Number(dayjs.utc(a.start_time).format("HH")) -
+        Number(dayjs.utc(b.start_time).format("HH")),
     );
 
   return (
@@ -33,10 +35,12 @@ export default function CheckSlots() {
       <div className="flex flex-col gap-2">
         <h2>Book lessons on {formatedCurrentDay}</h2>
         <p className="font-semibold">Available time slots</p>
-        {currentSlots.length > 0 ? (
-          currentSlots.map((slot) => <DayWithSlots slot={slot} key={slot.id} />)
+        {currentSlots!.length > 0 ? (
+          currentSlots?.map((slot) => (
+            <DayWithSlots slot={slot} key={slot.id} />
+          ))
         ) : (
-          <div className="text-xl">All available slots have perished</div>
+          <div className="text-xl">No lessons available at this date</div>
         )}
       </div>
     </div>

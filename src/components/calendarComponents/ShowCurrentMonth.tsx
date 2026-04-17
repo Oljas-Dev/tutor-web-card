@@ -3,12 +3,14 @@ import type { Slot } from "../../contexts/BookingContextData";
 import { useCalendar } from "../../contexts/CalendarContext";
 import SmallBlock from "../../ui/SmallBlock";
 import type { JSX } from "@emotion/react/jsx-runtime";
-import { useBookings } from "../../contexts/useBookings";
+import { useLessons } from "../../api/features/useLessons";
 
 export default function ShowCurrentMonth() {
   const { currentMonth, daysInMonth, isToday } = useCalendar();
-  const { filteredSlots } = useBookings();
   const [searchParams, serSearchParams] = useSearchParams();
+  const { lessons } = useLessons();
+
+  // console.log(lessons);
 
   const navigate = useNavigate();
 
@@ -37,9 +39,10 @@ export default function ShowCurrentMonth() {
   const days: JSX.Element[] = [];
 
   daysArr.forEach((day, i) => {
-    const greenSlots = filteredSlots?.some(
+    const greenSlots = lessons?.some(
       (slot: Slot) =>
-        slot.start.substring(0, 10) === day.id && slot.status === "available",
+        slot.start_time.substring(0, 10) === day.id &&
+        slot.status === "available",
     );
 
     days.push(

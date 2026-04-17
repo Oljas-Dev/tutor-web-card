@@ -1,6 +1,8 @@
-import { FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, type SubmitEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useLogin } from "../../../api/features/useSingIn";
+import { ArrowLeft } from "react-bootstrap-icons";
+import toast from "react-hot-toast";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -9,15 +11,22 @@ export default function SignIn() {
   const [loading, setLoading] = useState(false);
 
   const { login } = useLogin();
+  const navigate = useNavigate();
 
-  function handleSubmit(e: FormEvent) {
+  function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
+    setLoading(true);
     login({ email, password });
-    console.log("submit");
+    setLoading(false);
+    toast.success("Successfully logged in!");
   }
 
   return (
     <div className="flex flex-col justify-center gap-6 mx-auto w-[50%] h-screen">
+      <ArrowLeft
+        style={{ alignSelf: "start", cursor: "pointer" }}
+        onClick={() => navigate("/dashboard")}
+      />
       <div className="text-center">Sign in to access the Tutor Web App</div>
       <div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">

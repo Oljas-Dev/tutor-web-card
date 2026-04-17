@@ -1,42 +1,42 @@
 import { useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-import toast from "react-hot-toast";
-import { useBookings } from "../contexts/useBookings";
+import { useLessons } from "../api/features/useLessons";
+import { useBookLesson } from "../api/features/useBookLesson";
+import type { Slot } from "../contexts/BookingContextData";
 
 dayjs.extend(utc);
 
 export default function BookingConfirmation() {
-  const { filteredSlots } = useBookings();
+  const { lessons } = useLessons();
+  const { bookLesson, isBooking } = useBookLesson();
   const { lessonId } = useParams();
-
   const navigate = useNavigate();
+
+  if (!lessons) {
+    return <p>Is Loading...</p>;
+  }
+
   const id = lessonId?.substring(9);
 
-  const currentLesson = filteredSlots?.filter((lesson) => lesson.id === id);
+  const currentLesson = lessons?.filter((lesson) => lesson.id === id);
 
-  const currentLessonDate = dayjs.utc(currentLesson[0].start).format("MMMM D");
+  const currentLessonDate = dayjs
+    .utc(currentLesson![0].start_time)
+    .format("MMMM D");
   const currentLessonStartTime = dayjs
-    .utc(currentLesson[0].start)
+    .utc(currentLesson![0].start_time)
     .format("HH:mm");
-  const currentLessonEndTime = dayjs.utc(currentLesson[0].end).format("HH:mm");
-  const currentLessonDuration = currentLesson[0].duration;
+  const currentLessonEndTime = dayjs
+    .utc(currentLesson![0].end_time)
+    .format("HH:mm");
+  const currentLessonDuration = currentLesson![0].duration;
 
-  function handleBooking() {
-    // Filter out booking lesson from prev array
-    const prevArr = filteredSlots?.filter((slot) => slot.id !== id);
+  function handleBooking(id: Slot[]) {
+    const lessonId = id[0].id;
+    const value = "booked";
+    bookLesson({ value, lessonId });
 
-    // Return object with new status property
-    const editedLesson = currentLesson.map((lesson) =>
-      lesson.id === id ? { ...lesson, status: "booked" } : lesson,
-    );
-
-    // Save new array in localStorage
-    const preparedArr = prevArr.concat(editedLesson);
-
-    localStorage.setItem("slots", JSON.stringify(preparedArr));
-
-    toast.success("Success! Your booking information was sent to your email");
     navigate(-1);
   }
   return (
@@ -61,10 +61,10 @@ export default function BookingConfirmation() {
         <button onClick={() => navigate(-1)}>cancel</button>
         <button
           className="bg-jade hover:bg-jade/70 disabled:bg-jet/10"
-          onClick={() => handleBooking()}
-          // disabled
+          onClick={() => handleBooking(currentLesson)}
+          disabled={isBooking}
         >
-          book
+          {isBooking ? "booking..." : "book"}
         </button>
       </div>
     </div>

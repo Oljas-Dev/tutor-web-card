@@ -6,7 +6,7 @@ import Dashboard from "./components/Dashboard";
 import Planner from "./components/Planner";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import CheckSlots from "./components/calendarComponents/CheckTimeSlots";
+import CheckTimeSlots from "./components/calendarComponents/CheckTimeSlots";
 import BookingConfirmation from "./ui/BookingConfirmation";
 import { Toaster } from "react-hot-toast";
 import SignIn from "./components/authentication/login/SignIn";
@@ -17,7 +17,7 @@ function App() {
       <CalendarProvider>
         <BookingContextProvider>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <main className="flex flex-col justify-center items-center text-3xl bg-main-bg h-screen">
+            <main className="flex flex-col justify-center items-center text-3xl bg-main-bg pb-20">
               <Routes>
                 <Route path="login" element={<SignIn />} />
                 <Route path="/" element={<Applayout />}>
@@ -26,7 +26,7 @@ function App() {
                   <Route path="planner" element={<Planner />} />
                   <Route
                     path="dashboard/bookLesson/:dayId"
-                    element={<CheckSlots />}
+                    element={<CheckTimeSlots />}
                   />
                   <Route
                     path="dashboard/bookLesson/:dayId/:lessonId"
