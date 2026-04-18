@@ -5,8 +5,10 @@ import ShowCurrentMonth from "./calendarComponents/ShowCurrentMonth";
 import ShowNextMonth from "./calendarComponents/ShowNextMonth";
 import ShowPreviousMonth from "./calendarComponents/ShowPreviousMonth";
 import WeekDays from "./calendarComponents/WeekDays";
+import { useUser } from "../api/features/useUser";
 
 export default function Calendar() {
+  const { user } = useUser();
   const navigate = useNavigate();
   async function handleSendEmail() {
     try {
@@ -47,6 +49,7 @@ export default function Calendar() {
       </div>
       <button onClick={handleSendEmail}>send email</button>
       <button onClick={() => navigate("/planner")}>plan your lessons</button>
+      {!user && "You are not logged in, please log in to book your lessons!"}
     </div>
   );
 }

@@ -17,7 +17,7 @@ function App() {
       <CalendarProvider>
         <BookingContextProvider>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <main className="flex flex-col justify-center items-center text-3xl bg-main-bg pb-20">
+            <main className="flex flex-col justify-center items-center min-h-screen text-3xl bg-main-bg pb-20">
               <Routes>
                 <Route path="login" element={<SignIn />} />
                 <Route path="/" element={<Applayout />}>
