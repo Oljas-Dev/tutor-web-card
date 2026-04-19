@@ -1,8 +1,7 @@
 import AboutMeText from "./AboutMeText";
 import Achievements from "./Achievements";
+import Avatar from "./Avatar";
 import Header from "./Header";
-
-import avatar from "../../assets/avatar.png";
 
 export default function Hero() {
   return (
@@ -12,10 +11,7 @@ export default function Hero() {
         <Achievements />
         <AboutMeText />
       </div>
-
-      <div className="flex-center">
-        <img src={avatar} alt="Teacher Avatar" />
-      </div>
+      <Avatar />
     </section>
   );
 }

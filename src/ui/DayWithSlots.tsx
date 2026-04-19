@@ -9,6 +9,7 @@ export default function DayWithSlots({ slot }: { slot: Slot }) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const navigate = useNavigate();
+  const booked = slot.status === "booked";
   const startTime = dayjs.utc(slot.start_time).format("HH:mm");
   const endTime = dayjs.utc(slot.end_time).format("HH:mm");
   //   console.log(date);
@@ -20,7 +21,7 @@ export default function DayWithSlots({ slot }: { slot: Slot }) {
   }
   return (
     <div
-      className={`flex flex-col items-center py-2 rounded ${slot.status === "booked" ? "bg-jade-light/40 [&_p]:text-jet/50" : "bg-jade cursor-pointer"}`}
+      className={`flex flex-col items-center py-2 rounded ${booked ? "bg-jade-light/40 [&_p]:text-jet/50 hover:bg-jade-light/40 hover:[&_p]:text-jet/50" : "bg-jade cursor-pointer hover:bg-jet hover:[&_p]:text-jade"}`}
       onClick={
         slot.status === "available" ? () => handleSlotClick() : () => null
       }

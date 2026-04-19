@@ -1,8 +1,11 @@
-import { useUser } from "../../api/features/useUser";
+import useProfile from "../../api/features/useProfile";
 import Stars from "./ui/Stars";
 
 export default function Header() {
-  const { user } = useUser();
+  const { profile } = useProfile();
+
+  if (!profile) return <p>Waiting for profile to load...</p>;
+  const userRole = profile?.at(0).role;
 
   return (
     <div>
@@ -10,7 +13,7 @@ export default function Header() {
         <h1>Kate Decker</h1>
         <Stars />
       </div>
-      <p className="font-semibold">{user ? "teacher" : "guest"}</p>
+      <p className="font-semibold">{userRole}</p>
     </div>
   );
 }

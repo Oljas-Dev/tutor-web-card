@@ -1,6 +1,6 @@
 export default function AboutMeText() {
   return (
-    <div className="text-center">
+    <div className="text-center px-2">
       <h4>Experienced English Tutor | Helping You Speak with Confidence</h4>
       <p>
         I am a dedicated English tutor focused on helping students improve their

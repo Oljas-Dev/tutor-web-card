@@ -28,10 +28,16 @@ export default function CheckTimeSlots() {
 
   return (
     <div className="w-[50%]">
-      <ArrowLeft
-        style={{ alignSelf: "start", marginBottom: "16px", cursor: "pointer" }}
-        onClick={() => navigate("/dashboard")}
-      />
+      <div className="bg-jet/20 max-w-fit px-2 rounded-lg hover:bg-jet/10">
+        <ArrowLeft
+          style={{
+            alignSelf: "start",
+            marginBottom: "16px",
+            cursor: "pointer",
+          }}
+          onClick={() => navigate("/dashboard")}
+        />
+      </div>
       <div className="flex flex-col gap-2">
         <h2>Book lessons on {formatedCurrentDay}</h2>
         <p className="font-semibold">Available time slots</p>

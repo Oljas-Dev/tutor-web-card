@@ -1,43 +1,50 @@
 import { useNavigate } from "react-router-dom";
-import { sendEmail } from "../api/emails/useResendEmail";
+// import { sendEmail } from "../api/emails/useResendEmail";
 import MonthsSlider from "./calendarComponents/MonthsSlider";
 import ShowCurrentMonth from "./calendarComponents/ShowCurrentMonth";
 import ShowNextMonth from "./calendarComponents/ShowNextMonth";
 import ShowPreviousMonth from "./calendarComponents/ShowPreviousMonth";
 import WeekDays from "./calendarComponents/WeekDays";
 import { useUser } from "../api/features/useUser";
+import useProfile from "../api/features/useProfile";
 
 export default function Calendar() {
   const { user } = useUser();
+  const { profile } = useProfile();
+
   const navigate = useNavigate();
-  async function handleSendEmail() {
-    try {
-      await sendEmail([
-        {
-          to: "delivered@resend.dev",
-          subject: "One step closer to Tutor Web App release",
-          html: `<div>
-            <h1>You have done this part!</h1>
-            <p>Your server works successfully and sends emails using Resend.</p>
-            <p>Congratulations, on finishing this part!</p>
-            <p>You are well done! 😉🚀</p>
-        </div>`,
-        },
-        {
-          to: "delivered@resend.dev",
-          subject: "Your have booked your lesson on 22.22.2222",
-          html: `<div>
-            <h1>You have done this part!</h1>
-            <p>Teacher will wait for, no shows are not excused.</p>
-            <p>Please do come!!!</p>
-            <p>From your loving Teacher!!!</p>
-        </div>`,
-        },
-      ]);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+
+  if (!profile) return <p>Waiting for profile to load...</p>;
+  const userRole = profile.at(0).role;
+
+  // async function handleSendEmail() {
+  //   try {
+  //     await sendEmail([
+  //       {
+  //         to: "delivered@resend.dev",
+  //         subject: "One step closer to Tutor Web App release",
+  //         html: `<div>
+  //           <h1>You have done this part!</h1>
+  //           <p>Your server works successfully and sends emails using Resend.</p>
+  //           <p>Congratulations, on finishing this part!</p>
+  //           <p>You are well done! 😉🚀</p>
+  //       </div>`,
+  //       },
+  //       {
+  //         to: "delivered@resend.dev",
+  //         subject: "Your have booked your lesson on 22.22.2222",
+  //         html: `<div>
+  //           <h1>You have done this part!</h1>
+  //           <p>Teacher will wait for, no shows are not excused.</p>
+  //           <p>Please do come!!!</p>
+  //           <p>From your loving Teacher!!!</p>
+  //       </div>`,
+  //       },
+  //     ]);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
   return (
     <div className="bg-jade text-jet w-full px-10 pt-6 pb-15">
       <MonthsSlider />
@@ -47,9 +54,14 @@ export default function Calendar() {
         <ShowCurrentMonth />
         <ShowNextMonth />
       </div>
-      <button onClick={handleSendEmail}>send email</button>
-      <button onClick={() => navigate("/planner")}>plan your lessons</button>
+      {userRole === "teacher" && (
+        <button onClick={() => navigate("/planner")}>plan your lessons</button>
+      )}
       {!user && "You are not logged in, please log in to book your lessons!"}
     </div>
   );
+}
+
+{
+  /* <button onClick={handleSendEmail}>send email</button> */
 }

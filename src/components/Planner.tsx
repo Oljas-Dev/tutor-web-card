@@ -115,9 +115,14 @@ export default function Planner() {
           </p>
         )}
 
-        <button type="submit" className="cursor-pointer border py-1 rounded">
-          {isInserting ? "creating new lessons..." : "save"}
-        </button>
+        <div className="flex flex-col gap-4">
+          <button type="submit" className="cursor-pointer py-1">
+            {isInserting ? "creating new lessons..." : "save"}
+          </button>
+          <button type="reset" className="py-1" onClick={() => navigate(-1)}>
+            cancel
+          </button>
+        </div>
       </div>
     </form>
   );

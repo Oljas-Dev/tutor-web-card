@@ -8,7 +8,7 @@ export default function AchievementsCard({
   smallText?: boolean;
 }) {
   return (
-    <div className="w-40 h-45 flex flex-col bg-jade text-center rounded-xl overflow-hidden shadow-[3px_3px_3px_var(--shadow-dark-card),-3px_-3px_3px_var(--shadow-light)]">
+    <div className="w-40 h-45 flex flex-col bg-jade text-center rounded-xl overflow-hidden shadow-[3px_3px_3px_var(--shadow-dark-card),-3px_-3px_3px_var(--shadow-light)] border-t border-l border-t-stroke-light border-l-stroke-light">
       <div className="flex-1 flex-center">
         <p className={`${smallText ? "text-5xl" : "text-7xl"}`}>{value}</p>
       </div>
