@@ -12,6 +12,7 @@ export default function CheckTimeSlots() {
   const { dayId } = useParams();
 
   const navigate = useNavigate();
+  const now = dayjs().format("YYYY-MM-DD HH:mm");
 
   if (!lessons) return <p>waiting for lessons to load...</p>;
 
@@ -19,7 +20,10 @@ export default function CheckTimeSlots() {
   const formatedCurrentDay = dayjs(currentDay).format("MMMM D");
 
   const currentSlots = lessons
-    ?.filter((slot) => slot.start_time.substring(0, 10) === currentDay)
+    .filter((slot) =>
+      dayjs(now).add(5, "minute").isAfter(slot.start_time) ? null : slot,
+    )
+    .filter((slot) => slot.start_time.substring(0, 10) === currentDay)
     .sort(
       (a, b) =>
         Number(dayjs.utc(a.start_time).format("HH")) -
@@ -46,7 +50,7 @@ export default function CheckTimeSlots() {
             <DayWithSlots slot={slot} key={slot.id} />
           ))
         ) : (
-          <div className="text-xl">No lessons available at this date</div>
+          <div className="text-xl">All lessons have expired</div>
         )}
       </div>
     </div>

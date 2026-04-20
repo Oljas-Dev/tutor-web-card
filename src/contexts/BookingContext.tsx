@@ -20,8 +20,6 @@ export function BookingContextProvider({ children }: { children: ReactNode }) {
   const [duration, setDuration] = useState<0 | 30 | 60 | 45>(30);
   const [buffer, setBuffer] = useState<number>(0);
 
-  // const [filteredSlots, setFilteredSlots] = useState<Slot[]>([]);
-
   const { user } = useUser();
 
   // function expiredSlotsCheck() {
@@ -128,16 +126,6 @@ export function BookingContextProvider({ children }: { children: ReactNode }) {
 
           // Generation breaks if time left is not enough for a whole lesson
           if (slotEnd.isAfter(dayEndTime)) break;
-
-          // slots.push({
-          //   id: crypto.randomUUID(),
-          //   user_id: user!.id,
-          //   startDate: currentTime.toISOString(),
-          //   endDate: slotEnd.toISOString(),
-          //   duration: form.duration,
-          //   buffer: form.buffer || 0,
-          //   status: "available",
-          // });
 
           slots.push({
             id: crypto.randomUUID(),

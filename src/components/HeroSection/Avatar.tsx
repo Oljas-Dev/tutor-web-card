@@ -1,4 +1,10 @@
 import avatar from "../../assets/avatar.png";
+import instaIcon from "../../assets/instagram.svg";
+import facebook from "../../assets/facebook.svg";
+import x from "../../assets/twitter.svg";
+import youtube from "../../assets/youtube.svg";
+
+import SocialNetsCard from "./ui/SocialNetsCard";
 
 export default function Avatar() {
   return (
@@ -12,6 +18,12 @@ export default function Avatar() {
           alt="Teacher Avatar"
           className="w-44 h-44 object-cover rounded-xl "
         />
+      </div>
+      <div className="flex gap-3 mt-2">
+        <SocialNetsCard icon={instaIcon} alt="instagram" />
+        <SocialNetsCard icon={facebook} alt="instagram" />
+        <SocialNetsCard icon={x} alt="instagram" />
+        <SocialNetsCard icon={youtube} alt="instagram" />
       </div>
     </div>
   );
