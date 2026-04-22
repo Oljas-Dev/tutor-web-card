@@ -2,11 +2,15 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import type { Slot } from "../contexts/BookingContextData";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useBookings } from "../contexts/useBookings";
+import { useUser } from "../api/features/useUser";
 
 dayjs.extend(utc);
 
 export default function DayWithSlots({ slot }: { slot: Slot }) {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { setNoUserError } = useBookings();
+  const { user } = useUser();
 
   const navigate = useNavigate();
   const booked = slot.status === "booked";
@@ -15,6 +19,10 @@ export default function DayWithSlots({ slot }: { slot: Slot }) {
   //   console.log(date);
 
   function handleSlotClick() {
+    if (!user) {
+      setNoUserError(true);
+      return;
+    }
     searchParams.set("lessonId", slot.id);
     setSearchParams(searchParams);
     navigate(searchParams.toString());

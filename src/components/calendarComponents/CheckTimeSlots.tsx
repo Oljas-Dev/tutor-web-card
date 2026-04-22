@@ -1,14 +1,16 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import DayWithSlots from "../../ui/DayWithSlots";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { ArrowLeft } from "react-bootstrap-icons";
 import { useLessons } from "../../api/features/useLessons";
+import { useBookings } from "../../contexts/useBookings";
 
 dayjs.extend(utc);
 
 export default function CheckTimeSlots() {
   const { lessons } = useLessons();
+  const { noUserError } = useBookings();
   const { dayId } = useParams();
 
   const navigate = useNavigate();
@@ -51,6 +53,19 @@ export default function CheckTimeSlots() {
           ))
         ) : (
           <div className="text-xl">All lessons have expired</div>
+        )}
+        {noUserError && (
+          <p>
+            Please{" "}
+            <Link to={"/login"} className="text-blue-800">
+              login
+            </Link>{" "}
+            or{" "}
+            <Link to={"/signup"} className="text-blue-800">
+              sign up
+            </Link>{" "}
+            to continue with booking
+          </p>
         )}
       </div>
     </div>

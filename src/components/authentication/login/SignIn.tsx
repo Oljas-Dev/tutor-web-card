@@ -16,7 +16,16 @@ export default function SignIn() {
   function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
-    login({ email, password });
+    login(
+      { email, password },
+      {
+        onError: (error) => {
+          setError(error.message);
+          setLoading(false);
+          return;
+        },
+      },
+    );
     setLoading(false);
     toast.success("Successfully logged in!");
   }

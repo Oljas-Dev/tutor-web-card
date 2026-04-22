@@ -1,11 +1,14 @@
 import useProfile from "../../api/features/useProfile";
+import { useUser } from "../../api/features/useUser";
 import Stars from "./ui/Stars";
 
 export default function Header() {
   const { profile } = useProfile();
+  const { user } = useUser();
 
   if (!profile) return <p>Waiting for profile to load...</p>;
-  const userRole = profile?.at(0).role;
+  console.log(user?.user_metadata.full_name);
+  const userRole = profile.length === 0 ? "guest" : profile?.at(0).role;
 
   return (
     <div>

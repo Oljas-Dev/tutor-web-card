@@ -6,14 +6,17 @@ export function useBookLesson() {
   const queryClient = useQueryClient();
 
   const { mutate: bookLesson, isPending: isBooking } = useMutation({
-    mutationFn: ({ value, lessonId }: { value: string; lessonId: string }) =>
-      apiBookLesson({ value, lessonId }),
+    mutationFn: ({ lessonId }: { lessonId: string }) =>
+      apiBookLesson({ lessonId }),
     mutationKey: ["slots"],
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["slots"] });
       toast.success(
         "Lesson was successfuly booked. Check your email with confirmation!",
       );
+    },
+    onError: (err) => {
+      console.error(err.message);
     },
   });
 

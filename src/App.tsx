@@ -10,6 +10,8 @@ import CheckTimeSlots from "./components/calendarComponents/CheckTimeSlots";
 import BookingConfirmation from "./ui/BookingConfirmation";
 import { Toaster } from "react-hot-toast";
 import SignIn from "./components/authentication/login/SignIn";
+import LogOut from "./components/authentication/logout/LogOut";
+import SignUp from "./components/authentication/signup/SignUp";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
             <main className="flex flex-col justify-center items-center min-h-screen text-3xl bg-main-bg pb-20">
               <Routes>
                 <Route path="login" element={<SignIn />} />
+                <Route path="logout" element={<LogOut />} />
+                <Route path="signup" element={<SignUp />} />
                 <Route path="/" element={<Applayout />}>
                   <Route index element={<Navigate replace to="dashboard" />} />
                   <Route path="dashboard" element={<Dashboard />} />

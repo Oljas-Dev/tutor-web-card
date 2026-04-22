@@ -15,7 +15,7 @@ export default function Calendar() {
   const navigate = useNavigate();
 
   if (!profile) return <p>Waiting for profile to load...</p>;
-  const userRole = profile.at(0).role;
+  const userRole = profile.length === 0 ? "guest" : profile?.at(0).role;
 
   // async function handleSendEmail() {
   //   try {
@@ -46,7 +46,7 @@ export default function Calendar() {
   //   }
   // }
   return (
-    <div className="bg-jade text-jet w-full px-10 pt-6 pb-15">
+    <div className="bg-jade text-jet text-center w-full px-10 pt-6 pb-15">
       <MonthsSlider />
       <WeekDays />
       <div className="calendar-grid">
@@ -57,7 +57,9 @@ export default function Calendar() {
       {userRole === "teacher" && (
         <button onClick={() => navigate("/planner")}>plan your lessons</button>
       )}
-      {!user && "You are not logged in, please log in to book your lessons!"}
+      {!user && (
+        <p>"You are not logged in, please log in to book your lessons!"</p>
+      )}
     </div>
   );
 }

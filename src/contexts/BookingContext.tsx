@@ -19,6 +19,8 @@ export function BookingContextProvider({ children }: { children: ReactNode }) {
   const [endTime, setEndTime] = useState("");
   const [duration, setDuration] = useState<0 | 30 | 60 | 45>(30);
   const [buffer, setBuffer] = useState<number>(0);
+  // Errors with booking
+  const [noUserError, setNoUserError] = useState(false);
 
   const { user } = useUser();
 
@@ -201,6 +203,8 @@ export function BookingContextProvider({ children }: { children: ReactNode }) {
         selectedDays,
         duration,
         buffer,
+        noUserError,
+        setNoUserError,
         setStartDate,
         setStartTime,
         setSelectedDays,

@@ -16,7 +16,7 @@ export function useLogin() {
       navigate("/dashboard", { replace: true });
     },
     onError: (err) => {
-      console.error("ERROR", err);
+      console.error("ERROR", err.message);
     },
   });
 

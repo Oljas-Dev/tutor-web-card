@@ -16,7 +16,6 @@ export default function BookingConfirmation() {
   if (!lessons) {
     return <p>Is Loading...</p>;
   }
-
   const id = lessonId?.substring(9);
 
   const currentLesson = lessons?.filter((lesson) => lesson.id === id);
@@ -34,8 +33,7 @@ export default function BookingConfirmation() {
 
   function handleBooking(id: Slot[]) {
     const lessonId = id[0].id;
-    const value = "booked";
-    bookLesson({ value, lessonId });
+    bookLesson({ lessonId });
 
     navigate(-1);
   }

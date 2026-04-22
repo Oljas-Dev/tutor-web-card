@@ -31,6 +31,8 @@ interface BookingTypes {
   selectedDays: number[];
   duration: 0 | 30 | 60 | 45;
   buffer: number;
+  noUserError: boolean;
+  setNoUserError: Dispatch<SetStateAction<boolean>>;
   setStartDate: Dispatch<SetStateAction<string>>;
   setEndDate: Dispatch<SetStateAction<string>>;
   setStartTime: Dispatch<SetStateAction<string>>;

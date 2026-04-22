@@ -3,13 +3,21 @@ import { supabase } from "../supabase/supabase";
 export async function signup({
   email,
   password,
+  full_name = "",
 }: {
   email: string;
   password: string;
+  full_name: string;
 }) {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
+    options: {
+      data: {
+        full_name,
+        avatar_url: "",
+      },
+    },
   });
 
   if (error) throw new Error(error.message);
@@ -30,16 +38,28 @@ export async function signin({
   });
 
   if (error) {
-    console.error(error);
+    alert(error.message);
+    return;
   }
   return data;
 }
 
 export async function getCurrentUser() {
-  const { data, error } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
 
   if (error) throw new Error(error.message);
 
   // console.log(data);
-  return data?.user;
+  return user;
+}
+
+export async function logout() {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    console.error(error.message);
+  }
 }
