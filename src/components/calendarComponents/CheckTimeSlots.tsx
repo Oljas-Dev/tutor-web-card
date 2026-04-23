@@ -1,5 +1,5 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import DayWithSlots from "../../ui/DayWithSlots";
+import DayWithSlots from "./DayWithSlots";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { ArrowLeft } from "react-bootstrap-icons";

@@ -8,25 +8,27 @@ export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
 
-  const { login } = useLogin();
+  const { login, isPending } = useLogin();
   const navigate = useNavigate();
 
   function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
-    setLoading(true);
+
+    if (!email) {
+      setError("Your email is requred");
+    } else if (!password) {
+      setError("Please enter your password");
+    }
     login(
       { email, password },
       {
         onError: (error) => {
           setError(error.message);
-          setLoading(false);
           return;
         },
       },
     );
-    setLoading(false);
     toast.success("Successfully logged in!");
   }
 
@@ -47,6 +49,7 @@ export default function SignIn() {
               placeholder="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={isPending}
             />
           </div>
 
@@ -58,14 +61,15 @@ export default function SignIn() {
               placeholder="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={isPending}
             />
           </div>
           <button
             type="submit"
             className="bg-jet-500 text-jade-500 hover:bg-jet-500/80 active:bg-jet-500"
-            disabled={loading}
+            disabled={isPending}
           >
-            {loading ? "creating user" : "sign in"}
+            {isPending ? "creating user" : "sign in"}
           </button>
         </form>
       </div>

@@ -1,20 +1,20 @@
 import toast from "react-hot-toast";
-import { logout } from "../../../api/authentication/apiAuth";
-import { useNavigate } from "react-router-dom";
+import useLogout from "../../../api/features/useLogout";
 
 export default function LogOut() {
-  const navigate = useNavigate();
+  const { logout, isLoginout } = useLogout();
 
   function handleSignOut() {
     logout();
     toast.success("Hope to see you soon again!");
-    navigate("/dashboard");
   }
   return (
     <div className="flex-center gap-2 text-center">
       <h2>Do you really want to sign out?</h2>
       <p>Please confirm your signing out</p>
-      <button onClick={() => handleSignOut()}>sign out</button>
+      <button onClick={() => handleSignOut()} disabled={isLoginout}>
+        sign out
+      </button>
     </div>
   );
 }

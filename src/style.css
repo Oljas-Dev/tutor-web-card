@@ -39,6 +39,24 @@
   .flex-center {
     @apply flex flex-col justify-center;
   }
+
+  .card {
+    transition: color 0.2s ease;
+  }
+
+  .card:hover .icon {
+    color: #abd1c6;
+  }
+
+  .icon {
+    font-size: 18px;
+  }
+
+  .card .iconBtn {
+    background-color: transparent;
+    padding: 0 5px;
+    border: none;
+  }
 }
 
 @theme {
