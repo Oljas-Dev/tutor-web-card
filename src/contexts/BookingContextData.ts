@@ -32,6 +32,8 @@ interface BookingTypes {
   duration: 0 | 30 | 60 | 45;
   buffer: number;
   noUserError: boolean;
+  selectedSlot: string | null;
+  setSelectedSlot: Dispatch<SetStateAction<string | null>>;
   setNoUserError: Dispatch<SetStateAction<boolean>>;
   setStartDate: Dispatch<SetStateAction<string>>;
   setEndDate: Dispatch<SetStateAction<string>>;

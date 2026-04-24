@@ -21,6 +21,8 @@ export function BookingContextProvider({ children }: { children: ReactNode }) {
   const [buffer, setBuffer] = useState<number>(0);
   // Errors with booking
   const [noUserError, setNoUserError] = useState(false);
+  // Dialog window
+  const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
 
   const { user } = useUser();
 
@@ -204,6 +206,8 @@ export function BookingContextProvider({ children }: { children: ReactNode }) {
         duration,
         buffer,
         noUserError,
+        selectedSlot,
+        setSelectedSlot,
         setNoUserError,
         setStartDate,
         setStartTime,

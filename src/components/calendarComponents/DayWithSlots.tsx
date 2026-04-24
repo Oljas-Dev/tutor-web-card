@@ -1,15 +1,19 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import type { Slot } from "../../contexts/BookingContextData";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useBookings } from "../../contexts/useBookings";
 import { useUser } from "../../api/features/useUser";
-import { PencilSquare } from "react-bootstrap-icons";
-import DeleteIcon from "./ui/DeleteIcon";
 
 dayjs.extend(utc);
 
-export default function DayWithSlots({ slot }: { slot: Slot }) {
+export default function DayWithSlots({
+  slot,
+  openDialog,
+}: {
+  slot: Slot;
+  openDialog: (slotId: string) => void;
+}) {
   const [searchParams, setSearchParams] = useSearchParams();
   const { setNoUserError } = useBookings();
   const { user } = useUser();
@@ -29,27 +33,30 @@ export default function DayWithSlots({ slot }: { slot: Slot }) {
     setSearchParams(searchParams);
     navigate(searchParams.toString());
   }
+
   return (
-    <div
-      className={`flex flex-col items-center py-2 rounded ${booked ? "bg-jade-light/40 [&_p]:text-jet/50 hover:bg-jade-light/40 hover:[&_p]:text-jet/50" : "bg-jade cursor-pointer hover:bg-jet hover:[&_p]:text-jade"} card`}
-      onClick={
-        slot.status === "available" ? () => handleSlotClick() : () => null
-      }
-    >
-      <div className="flex justify-between items-center w-full px-3">
-        <p>
-          {startTime} - {endTime} {slot.status}
-        </p>
-        <button
-          className="iconBtn"
-          onClick={(e) => {
-            console.log("delete me?");
-            e.stopPropagation();
-          }}
-        >
-          <i className="bi bi-trash3-fill icon"></i>
-        </button>
+    <>
+      <div
+        className={`flex flex-col items-center py-2 rounded ${booked ? "bg-jade-light/40 [&_p]:text-jet/50 hover:bg-jade-light/40 hover:[&_p]:text-jet/50" : "bg-jade cursor-pointer hover:bg-jet hover:[&_p]:text-jade"} card`}
+        onClick={
+          slot.status === "available" ? () => handleSlotClick() : () => null
+        }
+      >
+        <div className="flex justify-between items-center w-full px-3">
+          <p>
+            {startTime} - {endTime} {slot.status}
+          </p>
+          <button
+            className="iconBtn"
+            onClick={(e) => {
+              e.stopPropagation();
+              openDialog(slot.id);
+            }}
+          >
+            <i className="bi bi-trash3-fill icon"></i>
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

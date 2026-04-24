@@ -5,16 +5,18 @@ import utc from "dayjs/plugin/utc";
 import { ArrowLeft } from "react-bootstrap-icons";
 import { useLessons } from "../../api/features/useLessons";
 import { useBookings } from "../../contexts/useBookings";
+import React, { useRef } from "react";
 
 dayjs.extend(utc);
 
 export default function CheckTimeSlots() {
   const { lessons } = useLessons();
-  const { noUserError } = useBookings();
+  const { noUserError, setSelectedSlot, selectedSlot } = useBookings();
   const { dayId } = useParams();
 
   const navigate = useNavigate();
   const now = dayjs().format("YYYY-MM-DD HH:mm");
+  const dialogRef = useRef<HTMLDialogElement | null>(null);
 
   if (!lessons) return <p>waiting for lessons to load...</p>;
 
@@ -31,6 +33,36 @@ export default function CheckTimeSlots() {
         Number(dayjs.utc(a.start_time).format("HH")) -
         Number(dayjs.utc(b.start_time).format("HH")),
     );
+
+  // Open dialog window
+  function openDialog(slotId: string) {
+    setSelectedSlot(slotId);
+    dialogRef.current?.showModal();
+  }
+
+  // Close by clicking on button
+  const closeDialog = (): void => {
+    dialogRef.current?.close();
+    setSelectedSlot(null);
+  };
+
+  // Close dialog when clicking outside
+  const handleClickOutside = (e: React.MouseEvent<HTMLDialogElement>) => {
+    const dialog = dialogRef.current;
+    if (dialog && e.target === dialog) {
+      closeDialog();
+    }
+  };
+
+  // Delete current lesson slot
+  function handleDelete() {
+    if (!selectedSlot) return;
+
+    console.log("slot was not deleted, it is just a test");
+
+    // deleteSlot(selectedSlot.id); // your API call
+    closeDialog();
+  }
 
   return (
     <div className="w-[50%]">
@@ -49,11 +81,12 @@ export default function CheckTimeSlots() {
         <p className="font-semibold">Available time slots</p>
         {currentSlots!.length > 0 ? (
           currentSlots?.map((slot) => (
-            <DayWithSlots slot={slot} key={slot.id} />
+            <DayWithSlots slot={slot} openDialog={openDialog} key={slot.id} />
           ))
         ) : (
           <div className="text-xl">All lessons have expired</div>
         )}
+
         {noUserError && (
           <p>
             Please{" "}
@@ -68,6 +101,13 @@ export default function CheckTimeSlots() {
           </p>
         )}
       </div>
+      <dialog ref={dialogRef} onClick={handleClickOutside}>
+        <div className="w-50 h-25 ">
+          <p>Do you really want to delete lesson from 07:00 - 08:00?</p>
+          <button onClick={closeDialog}>close</button>
+          <button onClick={handleDelete}>delete</button>
+        </div>
+      </dialog>
     </div>
   );
 }
